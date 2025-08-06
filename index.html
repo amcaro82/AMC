@@ -64,6 +64,7 @@
     <button type="button" onclick="calcularCuota()">Calcular cuota</button>
   </form>
   <p id="resultado"></p>
+  <button id="btn-whatsapp" style="display:none; background-color: #25D366;">Continuar por WhatsApp</button>
 </section>
 
 <div class="footer">
@@ -77,35 +78,54 @@
     const plazo = parseInt(document.getElementById("plazo").value);
     const tasa = parseFloat(document.getElementById("tasa").value);
 
+    const nombre = document.querySelector('input[name="nombre"]').value;
+    const documento = document.querySelector('input[name="documento"]').value;
+    const telefono = document.querySelector('input[name="telefono"]').value;
+
     const resultado = document.getElementById("resultado");
+    const btnWhatsapp = document.getElementById("btn-whatsapp");
     resultado.innerText = "Calculando...";
+    btnWhatsapp.style.display = "none";
 
     try {
       const respuesta = await fetch("https://calculadora-credito.onrender.com/calcular-cuota", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ monto, ingreso, plazo, tasa }),
       });
 
+      const data = await respuesta.json();
+
       if (!respuesta.ok) {
-        const error = await respuesta.json();
-        resultado.innerText = "❌ Error: " + error.error;
+        resultado.innerText = "❌ Error: " + data.error;
         return;
       }
 
-      const data = await respuesta.json();
       resultado.innerHTML = `
         💰 Cuota mensual estimada: <strong>$${data.cuota_mensual.toLocaleString()}</strong><br>
         📊 Porcentaje del ingreso: ${data.porcentaje_ingreso}%<br>
         ✅ ¿Aprobado?: <strong>${data.aprobado ? "Sí" : "No"}</strong>
       `;
+
+      if (data.aprobado) {
+        const mensaje = encodeURIComponent(
+          `Hola, mi nombre es ${nombre}.\nMi número de documento es ${documento}.\nYa hice el cálculo del crédito:\nMonto: $${monto.toLocaleString()}\nCuota mensual: $${data.cuota_mensual.toLocaleString()}\n¿Podemos continuar el proceso?`
+        );
+
+        const numero = "573102101667"; // ← Cambia esto por tu número de WhatsApp real
+
+        btnWhatsapp.onclick = () => {
+          window.open(`https://wa.me/${numero}?text=${mensaje}`, "_blank");
+        };
+        btnWhatsapp.style.display = "inline-block";
+      }
+
     } catch (err) {
       resultado.innerText = "❌ Ocurrió un error al conectar con el servidor.";
     }
   }
 </script>
+
 
 </body>
 </html>
