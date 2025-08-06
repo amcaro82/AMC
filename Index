@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Solicita tu crédito | Rápido y sin complicaciones</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
+    header { background: #003366; color: white; padding: 40px 20px; text-align: center; }
+    header h1 { margin-bottom: 10px; font-size: 36px; }
+    header p { font-size: 18px; }
+    section { padding: 40px 20px; max-width: 800px; margin: auto; background: white; margin-top: 20px; border-radius: 8px; }
+    h2 { color: #003366; }
+    ul { list-style: none; padding: 0; }
+    ul li::before { content: "✔️ "; }
+    form { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
+    input, select { padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; }
+    button { background: #0077cc; color: white; padding: 15px; border: none; border-radius: 4px; font-size: 18px; cursor: pointer; }
+    button:hover { background: #005fa3; }
+    .footer { text-align: center; font-size: 14px; margin-top: 20px; color: #555; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Solicita tu crédito en minutos</h1>
+  <p>Rápido, seguro y 100% en línea. Sin papeleos, sin complicaciones.</p>
+  <a href="#formulario"><button>Solicitar ahora</button></a>
+</header>
+
+<section>
+  <h2>¿Por qué elegirnos?</h2>
+  <ul>
+    <li>Tasas competitivas desde el 1.2% mensual</li>
+    <li>Aprobación en menos de 24 horas</li>
+    <li>Créditos desde $1.000.000 hasta $50.000.000</li>
+    <li>Sin necesidad de codeudor</li>
+    <li>Proceso 100% digital</li>
+  </ul>
+</section>
+
+<section>
+  <h2>¿Cómo funciona?</h2>
+  <ol>
+    <li>Llena el formulario de solicitud</li>
+    <li>Recibe tu preaprobación vía correo o WhatsApp</li>
+    <li>Firma digital y recibe el dinero en tu cuenta</li>
+  </ol>
+</section>
+
+<section>
+  <h2 id="formulario">Formulario de solicitud</h2>
+  <form action="#" method="POST">
+    <input type="text" name="nombre" placeholder="Nombre completo" required>
+    <input type="text" name="documento" placeholder="Número de documento" required>
+    <input type="email" name="email" placeholder="Correo electrónico" required>
+    <input type="tel" name="telefono" placeholder="Número de celular" required>
+    <input type="number" name="monto" placeholder="Monto deseado (COP)" required>
+    <input type="number" name="ingreso" placeholder="Ingreso mensual (COP)" required>
+    <label><input type="checkbox" required> Acepto el tratamiento de datos según la <a href="#">política de privacidad</a></label>
+    <button type="submit">Enviar solicitud</button>
+  </form>
+</section>
+
+<div class="footer">
+  © 2025 Créditos Seguros S.A.S. | Todos los derechos reservados
+</div>
+
+</body>
+</html>
