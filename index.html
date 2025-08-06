@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -50,32 +51,61 @@
 
 <section>
   <h2 id="formulario">Formulario de solicitud</h2>
-  <form action="#" method="POST">
+  <form>
     <input type="text" name="nombre" placeholder="Nombre completo" required>
     <input type="text" name="documento" placeholder="Número de documento" required>
     <input type="email" name="email" placeholder="Correo electrónico" required>
     <input type="tel" name="telefono" placeholder="Número de celular" required>
-    <input type="number" name="monto" placeholder="Monto deseado (COP)" required>
-    <input type="number" name="ingreso" placeholder="Ingreso mensual (COP)" required>
+    <input type="number" id="monto" placeholder="Monto deseado (COP)" required>
+    <input type="number" id="ingreso" placeholder="Ingreso mensual (COP)" required>
+    <input type="number" id="plazo" placeholder="Plazo en meses" required>
+    <input type="number" id="tasa" placeholder="Tasa mensual (ej. 0.02)" required>
     <label><input type="checkbox" required> Acepto el tratamiento de datos según la <a href="#">política de privacidad</a></label>
-    <button type="submit">Enviar solicitud</button>
+    <button type="button" onclick="calcularCuota()">Calcular cuota</button>
   </form>
+  <p id="resultado"></p>
 </section>
 
 <div class="footer">
   © 2025 Créditos Seguros S.A.S. | Todos los derechos reservados
 </div>
 
+<script>
+  async function calcularCuota() {
+    const monto = parseFloat(document.getElementById("monto").value);
+    const ingreso = parseFloat(document.getElementById("ingreso").value);
+    const plazo = parseInt(document.getElementById("plazo").value);
+    const tasa = parseFloat(document.getElementById("tasa").value);
+
+    const resultado = document.getElementById("resultado");
+    resultado.innerText = "Calculando...";
+
+    try {
+      const respuesta = await fetch("https://calculadora-credito.onrender.com/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ monto, ingreso, plazo, tasa }),
+      });
+
+      if (!respuesta.ok) {
+        const error = await respuesta.json();
+        resultado.innerText = "❌ Error: " + error.error;
+        return;
+      }
+
+      const data = await respuesta.json();
+      resultado.innerHTML = `
+        💰 Cuota mensual estimada: <strong>$${data.cuota_mensual.toLocaleString()}</strong><br>
+        📊 Porcentaje del ingreso: ${data.porcentaje_ingreso}%<br>
+        ✅ ¿Aprobado?: <strong>${data.aprobado ? "Sí" : "No"}</strong>
+      `;
+    } catch (err) {
+      resultado.innerText = "❌ Ocurrió un error al conectar con el servidor.";
+    }
+  }
+</script>
+
 </body>
 </html>
-
-<section>
-  <h2>Calcula tu cuota estimada</h2>
-  <input type="number" id="monto" placeholder="Monto solicitado (COP)" required>
-  <input type="number" id="ingreso" placeholder="Ingreso mensual (COP)" required>
-  <input type="number" id="plazo" placeholder="Plazo (meses)" required>
-  <input type="number" id="tasa" placeholder="Tasa mensual (ej. 0.02)" required>
-  <button onclick="calcularCuota()">Calcular cuota</button>
-  <p id="resultado"></p>
-</section>
-
